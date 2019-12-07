@@ -1,0 +1,120 @@
+import java.util.Scanner;
+import java.lang.Math;
+
+public class Korrelationskoeffizienten{
+	
+	public static void main(String[] args) {
+		try {
+	
+		//Scanner Nachfrage wieviele Wertepaare
+		
+		System.out.println("Wieviel Wertepaare wollen Sie eingeben?");
+		Scanner WPA = new Scanner(System.in);
+		String EA = WPA.next();
+		
+		//Initialisierung
+		
+		int A = Integer.parseInt(EA);
+		double[] x = new double[A];
+		double[] y = new double[A];
+		double SummeVonX = 0;
+		double SummeVonY = 0;
+		double KKT = 0;
+		double KKTOben = 0;
+		double KKTUnten = 0;
+		double KKTUnten1VorWurzel = 0;
+		double KKTUnten2VorWurzel = 0;
+		double KKTUnten1NachWurzel = 0;
+		double KKTUnten2NachWurzel = 0;
+		int n = A;
+		
+		
+		//Scanner Wertepaare
+		
+		Scanner EingabeX = new Scanner(System.in);
+		Scanner EingabeY = new Scanner(System.in);
+		
+				
+		for (int i = 1; i<=A; i++) {
+			System.out.println("Bitte geben Sie den gewünschten X Wert ein");
+			String B = EingabeX.nextLine();
+			x[i-1] = Double.parseDouble(B);
+			
+			
+			System.out.println("Bitte geben Sie den gewünschten Y Wert ein");
+			String C = EingabeY.nextLine();
+			y[i-1] = Double.parseDouble(C);	
+		}
+		
+		//Berechnung der Summen
+		
+		for (int j = x.length-1; j >= 0; j--) {
+			SummeVonX += x[j];
+			SummeVonY += y[j];
+		}
+		
+		SummeVonX = (SummeVonX) * (1/n);
+		SummeVonY = (SummeVonY) * (1/n);
+			
+		
+		//Berechnung oberer Abschnitt
+		
+		for (int k = x.length-1; k>= 0; k--) {
+			
+			KKTOben += ((x[k]-SummeVonX)*(y[k]-SummeVonY));
+			
+		}
+		
+		//Berechnung unterer Abschnitt
+		
+		for (int l = x.length-1; l>= 0; l--) {
+			KKTUnten1VorWurzel += Math.pow((x[l]-SummeVonX), 2);
+			KKTUnten2VorWurzel += Math.pow((y[l]-SummeVonY), 2);
+		}
+		
+		KKTUnten1NachWurzel = Math.sqrt(KKTUnten1VorWurzel);
+		KKTUnten2NachWurzel = Math.sqrt(KKTUnten2VorWurzel);
+		
+		KKTUnten = KKTUnten1NachWurzel * KKTUnten2NachWurzel;
+		
+
+		//Berechnung Komplett
+		
+		KKT = Math.abs((KKTOben/KKTUnten));		
+		
+		
+		//Ausgabe
+		
+		System.out.println("Korrelationskoeffizient "+KKT);
+		
+		if(KKT==1){
+			System.out.println("Perfekt linearer Zusammenhang");
+		}
+		else if(0.9 <= KKT && KKT <1) {
+			System.out.println("Sehr hohe Korrelation (linearer funktionaler Zusammenhang)");
+		}
+		else if(0.8<= KKT && KKT < 0.9) {
+			System.out.println("Hohe Korrelation (linearer funktionaler Zusammenhang wahrscheinlich)");
+		}
+		else if(0.7<= KKT && KKT <0.8) {
+			System.out.println("Mittlere Korrelation (linearer funktionaler Zusammenhang möglich)");
+		}
+		else if(0.5 <= KKT && KKT <0.7) {
+			System.out.println("Geringe Korrelation (keine Aussage zum linearen funktionalen Zusammenhang möglich)");
+		}
+		else if(0 <= KKT && KKT <0.5) {
+			System.out.println("Sehr geringe Korrelation (linearer funktionaler Zusammenhang nicht wahrscheinlich)");
+		}
+		else if(KKT == 0.0) {
+			System.out.println("Kein linearer Zusammenhang");
+		}
+		
+		}
+		catch (NumberFormatException e) {
+			System.out.println("Fehler! - Sie haben keine gültige Zahl oder einen Buchstaben eingegeben. Bitte versuchen Sie es erneut.");
+		}
+		
+		}	
+		
+	}
+
